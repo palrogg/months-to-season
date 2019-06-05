@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+  <link href="css/c3.min.css" rel="stylesheet">
+
+  <style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  body{
+    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 1em;
+  }
+  text{
+    font-size: 11px;
+  }
+  p.source{
+    text-align: right;
+    font-size: .9em;
+  }
+
+  @media only screen and (max-width: 700px){
+    /* ... */
+  }
+
+  /* CHARTS */
+
+  .axis text {
+    font-family: 'Proxima-Nova', sans-serif;
+    font-size: 13px;
+    pointer-events: none;
+    fill: #7e7e7e;
+  }
+
+  .y.axis text {
+    text-anchor: end !important;
+    font-size:14px;
+    fill: #7e7e7e;
+  }
+
+  .x .domain, .x line {
+    display: none;
+  }
+
+  .line {
+    stroke: #2f5491;
+    stroke-width: 3px;
+    fill: none;
+  }
+
+  .overlay {
+    fill: none;
+    pointer-events: all;
+  }
+
+  .focus {
+    font-size: 14px;
+  }
+
+  .focus circle {
+    fill: #5e8dc9;
+  }
+
+  .hiddenDetails{
+    display: none;
+  }
+  .c3-chart-line, .c3-legend-item{
+    opacity: .7 !important;
+  }
+  .c3-target-Etats-Unis, .c3-target-Chine, .c3-legend-item-Etats-Unis, .c3-legend-item-Chine{
+    opacity: 1 !important;
+  }
+  .c3-target-Etats-Unis .c3-line, .c3-target-Chine .c3-line{
+    stroke-width: 2px !important;
+  }
+  /* .c3-bar {
+  fill: #C32E1E !important;
+  } */
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row four-graphs">
+
+      <div class="col-md-12">
+        <h5>Les Américains dépassent les Français et les Britanniques</h5>
+        <p>Parmi les six pays… chapô chapô</p>
+        <div class="chart chart-ch"></div>
+        <p class="source">Source: OFS, <a target="_blank" href="https://www.pxweb.bfs.admin.ch/pxweb/fr/px-x-1003020000_103/px-x-1003020000_103/px-x-1003020000_103.px">Hôtellerie: arrivées et nuitées des établissements […]</a>, <a target="_blank" href="https://github.com/palrogg/months-to-seasons">retraité par «Le Temps»</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+
+<!-- Load d3.js and c3.js -->
+<script src="js/d3.min.js"></script>
+<script src="js/c3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.1/c3.min.js"></script>
+
+<script>
+
+function drawChart(target, data){
+  c3.generate({
+    bindto: target,
+    size: {
+      height: 300,
+    },
+    padding: {
+      //
+    },
+    data: {
+      x: 'x',
+
+      columns: [
+        ['x', '2009-2010', '2010-2011', '2011-2012', '2012-2013', '2013-2014', '2014-2015', '2015-2016', '2016-2017', '2017-2018', '2018-2019'],
+        ['Etats-Unis', 550816, 567378, 569948, 473244, 490270, 520553, 514825, 533728, 538242, 572210, 604128, 651155, 690645, 763922],
+        ['Italie', 492908, 532943, 570721, 529785, 537275, 497643, 459027, 463350, 483024, 473343, 467485, 440732, 458043, 455465],
+        ['France', 629773, 669553, 703962, 683229, 703549, 701925, 673165, 667254, 684276, 640490, 618400, 604652, 627680, 636851],
+        ['Allemagne', 2581205, 2685848, 2870556, 2772313, 2698586, 2501930, 2125592, 2091278, 2033352, 1915438, 1726669, 1707384, 1780699, 1776752],
+        ['Royaume-Uni', 1069993, 1104554, 1191701, 964080, 910708, 846900, 759656, 763738, 794861, 788402, 801418, 764406, 792426, 777080],
+        ['Chine', 70719, 86659, 97049, 98540, 127844, 163553, 223828, 262913, 309871, 398548, 370255, 402833, 436327, 448899],
+      ],
+      type: 'line',
+      colors: {
+        'Etats-Unis': '#3c3b6e',
+        Italie: '#009245',
+        Allemagne: '#ffce00',
+        'Royaume-Uni': '#cf142b',
+        Chine: '#de2910'
+      }
+    },
+    axis: {
+      y: {
+        label: 'Nuitées',
+        tick: {
+          format: function(d){ return d3.format(',')(d).replace(/,/g, ' ')}
+        },
+      },
+      x: {
+        type: 'category',
+        label: 'Saison d’hiver (novembre à avril)',
+      }
+    }
+  });
+}
+
+drawChart('.chart-ch');
+
+// drawChart('.chart-us', ['Nuitées', 550816, 567378, 569948, 473244, 490270, 520553, 514825, 533728, 538242, 572210, 604128, 651155, 690645, 763922]);
+
+</script>
+</body>
+</html>
